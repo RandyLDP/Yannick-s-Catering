@@ -26,12 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Show first slide
   slides[0].classList.add("active");
 
-  // Change slide every 4 sec
+  // Change slide every 3 seconds
   setInterval(function () {
     slides[currentSlide].classList.remove("active");
     currentSlide = (currentSlide + 1) % slides.length;
     slides[currentSlide].classList.add("active");
-  }, 4000);
+  }, 3000);
 
   // Navbar functionality
   let lastScrollTop = 0;

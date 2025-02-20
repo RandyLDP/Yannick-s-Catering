@@ -310,7 +310,7 @@ footer {
     width: 90%;
   }
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1.3;
     padding: 0 1rem;
   }
@@ -433,4 +433,10 @@ footer {
   }
 }
 
-.nav-hidden 
+.nav-hidden {
+  transform: translateY(-100%);
+}
+
+.nav-scrolled {
+  background-color: rgba(54, 116, 181, 0.95);
+}

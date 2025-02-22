@@ -440,3 +440,7 @@ footer {
 .nav-scrolled {
   background-color: rgba(54, 116, 181, 0.95);
 }
+
+.phone {
+  font-size: 0.85rem;
+}

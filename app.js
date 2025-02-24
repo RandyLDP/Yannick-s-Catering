@@ -55,4 +55,95 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
   });
+
+  // Gallery functionality
+  const galleryContainer = document.querySelector(".gallery-container");
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  const dotsContainer = document.querySelector(".gallery-dots");
+  let currentIndex = 0;
+
+  function initGallery() {
+    if (window.innerWidth <= 768) {
+      // Mobile Setup
+      galleryItems.forEach((item) => (item.style.display = "none"));
+      galleryItems[0].style.display = "block";
+      setupDots();
+    } else {
+      // Desktop Setup
+      galleryItems.forEach((item) => (item.style.display = "block"));
+      dotsContainer.innerHTML = "";
+    }
+  }
+
+  function setupDots() {
+    dotsContainer.innerHTML = "";
+    galleryItems.forEach((_, index) => {
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      if (index === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => updateGallery(index));
+      dotsContainer.appendChild(dot);
+    });
+  }
+
+  function updateGallery(index) {
+    if (window.innerWidth <= 768) {
+      galleryItems.forEach((item) => (item.style.display = "none"));
+      galleryItems[index].style.display = "block";
+
+      const dots = document.querySelectorAll(".dot");
+      dots.forEach((dot) => dot.classList.remove("active"));
+      dots[index].classList.add("active");
+
+      currentIndex = index;
+    }
+  }
+
+  // Touch events for mobile gallery
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  galleryContainer.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.touches[0].clientX;
+    },
+    false
+  );
+
+  galleryContainer.addEventListener(
+    "touchend",
+    (e) => {
+      if (window.innerWidth <= 768) {
+        touchEndX = e.changedTouches[0].clientX;
+        handleSwipe();
+      }
+    },
+    false
+  );
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+      } else {
+        currentIndex =
+          (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      }
+      updateGallery(currentIndex);
+    }
+  }
+
+  // Initialize gallery
+  initGallery();
+
+  // Debounce resize event
+  let resizeTimeout;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(initGallery, 250);
+  });
 });
